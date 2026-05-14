@@ -12,6 +12,20 @@
 #include "PluginProcessor.h"
 
 //==============================================================================
+class Oscilloscope : public juce::Component, public juce::Timer
+{
+public:
+    Oscilloscope (MyDigitalSynthAudioProcessor& processor);
+    
+    void paint (juce::Graphics& g) override;
+    void timerCallback() override;
+
+private:
+    MyDigitalSynthAudioProcessor& audioProcessor;
+    std::vector<float> sampleData;
+};
+
+//==============================================================================
 class MyDigitalSynthAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
@@ -26,6 +40,7 @@ private:
     MyDigitalSynthAudioProcessor& audioProcessor;
 
     // UI Components
+    Oscilloscope oscilloscope;
     juce::ComboBox oscSelector;
     juce::Slider   attackSlider;
     juce::Slider   releaseSlider;

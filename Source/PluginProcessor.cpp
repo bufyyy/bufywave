@@ -183,6 +183,20 @@ void MyDigitalSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         buffer.clear (i, 0, buffer.getNumSamples());
 
     synth.renderNextBlock (buffer, midiMessages, 0, buffer.getNumSamples());
+
+    // Push to oscilloscope FIFO
+    if (buffer.getNumChannels() > 0)
+    {
+        auto* channelData = buffer.getReadPointer (0); // Left channel
+
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            scopeFifo.write (1).forEach ([&] (int destIndex)
+            {
+                scopeData[(size_t)destIndex] = channelData[i];
+            });
+        }
+    }
 }
 
 //==============================================================================

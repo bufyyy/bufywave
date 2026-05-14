@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "SynthVoice.h"
+#include <array>
 
 //==============================================================================
 /**
@@ -57,7 +58,14 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    //==============================================================================
     juce::AudioProcessorValueTreeState apvts;
+
+    //==============================================================================
+    // Oscilloscope Data
+    static constexpr int scopeFifoSize = 2048;
+    juce::AbstractFifo scopeFifo { scopeFifoSize };
+    std::array<float, scopeFifoSize> scopeData;
 
 private:
     static constexpr int numVoices = 8;

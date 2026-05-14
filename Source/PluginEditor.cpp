@@ -10,9 +10,65 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-MyDigitalSynthAudioProcessorEditor::MyDigitalSynthAudioProcessorEditor (MyDigitalSynthAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+Oscilloscope::Oscilloscope (MyDigitalSynthAudioProcessor& processor)
+    : audioProcessor (processor)
 {
+    startTimerHz (30);
+}
+
+void Oscilloscope::timerCallback()
+{
+    bool needsRepaint = false;
+    
+    audioProcessor.scopeFifo.read (audioProcessor.scopeFifo.getNumReady()).forEach ([&] (int sourceIndex)
+    {
+        sampleData.push_back (audioProcessor.scopeData[(size_t)sourceIndex]);
+        needsRepaint = true;
+    });
+    
+    if (sampleData.size() > 2048)
+        sampleData.erase (sampleData.begin(), sampleData.begin() + (sampleData.size() - 2048));
+        
+    if (needsRepaint)
+        repaint();
+}
+
+void Oscilloscope::paint (juce::Graphics& g)
+{
+    g.fillAll (juce::Colours::black);
+    g.setColour (juce::Colour (0xff0f3460)); // Match the divider line color
+    g.drawRect (getLocalBounds(), 2);
+    
+    if (sampleData.empty())
+        return;
+        
+    juce::Path p;
+    auto bounds = getLocalBounds().toFloat().reduced (2.0f);
+    auto height = bounds.getHeight();
+    auto width  = bounds.getWidth();
+    auto numSamples = sampleData.size();
+    
+    p.startNewSubPath (bounds.getX(), bounds.getY() + height / 2.0f);
+    
+    auto xScale = width / (float)numSamples;
+    auto centerY = bounds.getY() + height / 2.0f;
+    
+    for (size_t i = 0; i < numSamples; ++i)
+    {
+        auto x = bounds.getX() + (float)i * xScale;
+        auto y = centerY - (sampleData[i] * height / 2.0f);
+        p.lineTo (x, y);
+    }
+    
+    g.setColour (juce::Colours::cyan);
+    g.strokePath (p, juce::PathStrokeType (2.0f));
+}
+
+//==============================================================================
+MyDigitalSynthAudioProcessorEditor::MyDigitalSynthAudioProcessorEditor (MyDigitalSynthAudioProcessor& p)
+    : AudioProcessorEditor (&p), audioProcessor (p), oscilloscope (p)
+{
+    addAndMakeVisible (oscilloscope);
     // --- Oscillator ComboBox ---
     oscSelector.addItemList (juce::StringArray { "Sine", "Square", "Saw" }, 1);
     oscSelector.setJustificationType (juce::Justification::centred);
@@ -53,7 +109,7 @@ MyDigitalSynthAudioProcessorEditor::MyDigitalSynthAudioProcessorEditor (MyDigita
     releaseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (
                             audioProcessor.apvts, "release", releaseSlider);
 
-    setSize (500, 300);
+    setSize (500, 450);
 }
 
 MyDigitalSynthAudioProcessorEditor::~MyDigitalSynthAudioProcessorEditor()
@@ -101,4 +157,7 @@ void MyDigitalSynthAudioProcessorEditor::resized()
 
     attackSlider.setBounds  (knobArea.removeFromLeft (halfWidth).reduced (10, 0));
     releaseSlider.setBounds (knobArea.reduced (10, 0));
+
+    bounds.removeFromTop (20); // Spacing for Oscilloscope
+    oscilloscope.setBounds (bounds); // Bottom area uses remaining space
 }

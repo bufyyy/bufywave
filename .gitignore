@@ -1,0 +1,59 @@
+# ==============================================================================
+# JUCE / C++ VST Plugin .gitignore
+# ==============================================================================
+
+# --- Build artifacts ---
+Builds/VisualStudio2022/x64/
+Builds/VisualStudio2022/.vs/
+Builds/VisualStudio2022/*.user
+Builds/VisualStudio2022/UpgradeLog.htm
+
+# --- Visual Studio ---
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+ipch/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.obj
+*.pch
+*.pdb
+*.ilk
+*.log
+*.tlog
+*.lastbuildstate
+*.idb
+*.exp
+*.lib
+*.dll
+*.exe
+*.res
+
+# --- macOS / Xcode ---
+Builds/MacOSX/build/
+*.xcuserdata
+*.xcworkspace
+DerivedData/
+.DS_Store
+
+# --- Linux ---
+Builds/LinuxMakefile/build/
+
+# --- JUCE generated ---
+JuceLibraryCode/
+
+# --- OS files ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini

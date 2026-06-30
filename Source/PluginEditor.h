@@ -15,29 +15,29 @@
 class Oscilloscope : public juce::Component, public juce::Timer
 {
 public:
-    Oscilloscope (MyDigitalSynthAudioProcessor& processor);
+    Oscilloscope (BufywaveAudioProcessor& processor);
     
     void paint (juce::Graphics& g) override;
     void timerCallback() override;
 
 private:
-    MyDigitalSynthAudioProcessor& audioProcessor;
+    BufywaveAudioProcessor& audioProcessor;
     std::vector<float> sampleData;
 };
 
 //==============================================================================
-class MyDigitalSynthAudioProcessorEditor  : public juce::AudioProcessorEditor
+class BufywaveAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    MyDigitalSynthAudioProcessorEditor (MyDigitalSynthAudioProcessor&);
-    ~MyDigitalSynthAudioProcessorEditor() override;
+    BufywaveAudioProcessorEditor (BufywaveAudioProcessor&);
+    ~BufywaveAudioProcessorEditor() override;
 
     //==========================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
-    MyDigitalSynthAudioProcessor& audioProcessor;
+    BufywaveAudioProcessor& audioProcessor;
 
     // UI Components
     Oscilloscope oscilloscope;
@@ -55,5 +55,5 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>   attackAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>   releaseAttachment;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MyDigitalSynthAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BufywaveAudioProcessorEditor)
 };

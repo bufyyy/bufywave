@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-Oscilloscope::Oscilloscope (MyDigitalSynthAudioProcessor& processor)
+Oscilloscope::Oscilloscope (BufywaveAudioProcessor& processor)
     : audioProcessor (processor)
 {
     startTimerHz (30);
@@ -65,7 +65,7 @@ void Oscilloscope::paint (juce::Graphics& g)
 }
 
 //==============================================================================
-MyDigitalSynthAudioProcessorEditor::MyDigitalSynthAudioProcessorEditor (MyDigitalSynthAudioProcessor& p)
+BufywaveAudioProcessorEditor::BufywaveAudioProcessorEditor (BufywaveAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p), oscilloscope (p)
 {
     addAndMakeVisible (oscilloscope);
@@ -112,12 +112,12 @@ MyDigitalSynthAudioProcessorEditor::MyDigitalSynthAudioProcessorEditor (MyDigita
     setSize (500, 450);
 }
 
-MyDigitalSynthAudioProcessorEditor::~MyDigitalSynthAudioProcessorEditor()
+BufywaveAudioProcessorEditor::~BufywaveAudioProcessorEditor()
 {
 }
 
 //==============================================================================
-void MyDigitalSynthAudioProcessorEditor::paint (juce::Graphics& g)
+void BufywaveAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // Dark gradient background
     g.fillAll (juce::Colour (0xff1a1a2e));
@@ -131,14 +131,14 @@ void MyDigitalSynthAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colour (0xffe2e2e2));
     g.setFont (juce::FontOptions (20.0f));
-    g.drawText ("MyDigitalSynth", titleArea, juce::Justification::centred, true);
+    g.drawText ("bufywave", titleArea, juce::Justification::centred, true);
 
     // Subtle divider line
     g.setColour (juce::Colour (0xff0f3460));
     g.drawLine (0.0f, 40.0f, static_cast<float> (getWidth()), 40.0f, 2.0f);
 }
 
-void MyDigitalSynthAudioProcessorEditor::resized()
+void BufywaveAudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds();
     bounds.removeFromTop (60);   // title bar + label clearance

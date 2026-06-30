@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-MyDigitalSynthAudioProcessor::MyDigitalSynthAudioProcessor()
+BufywaveAudioProcessor::BufywaveAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -41,13 +41,13 @@ MyDigitalSynthAudioProcessor::MyDigitalSynthAudioProcessor()
     }
 }
 
-MyDigitalSynthAudioProcessor::~MyDigitalSynthAudioProcessor()
+BufywaveAudioProcessor::~BufywaveAudioProcessor()
 {
 }
 
 //==============================================================================
 juce::AudioProcessorValueTreeState::ParameterLayout
-MyDigitalSynthAudioProcessor::createParameterLayout()
+BufywaveAudioProcessor::createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
@@ -73,12 +73,12 @@ MyDigitalSynthAudioProcessor::createParameterLayout()
 }
 
 //==============================================================================
-const juce::String MyDigitalSynthAudioProcessor::getName() const
+const juce::String BufywaveAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool MyDigitalSynthAudioProcessor::acceptsMidi() const
+bool BufywaveAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -87,7 +87,7 @@ bool MyDigitalSynthAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool MyDigitalSynthAudioProcessor::producesMidi() const
+bool BufywaveAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -96,7 +96,7 @@ bool MyDigitalSynthAudioProcessor::producesMidi() const
    #endif
 }
 
-bool MyDigitalSynthAudioProcessor::isMidiEffect() const
+bool BufywaveAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -105,50 +105,50 @@ bool MyDigitalSynthAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double MyDigitalSynthAudioProcessor::getTailLengthSeconds() const
+double BufywaveAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int MyDigitalSynthAudioProcessor::getNumPrograms()
+int BufywaveAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int MyDigitalSynthAudioProcessor::getCurrentProgram()
+int BufywaveAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void MyDigitalSynthAudioProcessor::setCurrentProgram (int index)
+void BufywaveAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String MyDigitalSynthAudioProcessor::getProgramName (int index)
+const juce::String BufywaveAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void MyDigitalSynthAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void BufywaveAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void MyDigitalSynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void BufywaveAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     juce::ignoreUnused (samplesPerBlock);
     synth.setCurrentPlaybackSampleRate (sampleRate);
 }
 
-void MyDigitalSynthAudioProcessor::releaseResources()
+void BufywaveAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool MyDigitalSynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool BufywaveAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -173,7 +173,7 @@ bool MyDigitalSynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& la
 }
 #endif
 
-void MyDigitalSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void BufywaveAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -200,25 +200,25 @@ void MyDigitalSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
 }
 
 //==============================================================================
-bool MyDigitalSynthAudioProcessor::hasEditor() const
+bool BufywaveAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* MyDigitalSynthAudioProcessor::createEditor()
+juce::AudioProcessorEditor* BufywaveAudioProcessor::createEditor()
 {
-    return new MyDigitalSynthAudioProcessorEditor (*this);
+    return new BufywaveAudioProcessorEditor (*this);
 }
 
 //==============================================================================
-void MyDigitalSynthAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void BufywaveAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     auto state = apvts.copyState();
     std::unique_ptr<juce::XmlElement> xml (state.createXml());
     copyXmlToBinary (*xml, destData);
 }
 
-void MyDigitalSynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void BufywaveAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     std::unique_ptr<juce::XmlElement> xml (getXmlFromBinary (data, sizeInBytes));
 
@@ -230,5 +230,5 @@ void MyDigitalSynthAudioProcessor::setStateInformation (const void* data, int si
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new MyDigitalSynthAudioProcessor();
+    return new BufywaveAudioProcessor();
 }

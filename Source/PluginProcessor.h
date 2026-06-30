@@ -16,14 +16,14 @@
 //==============================================================================
 /**
 */
-class MyDigitalSynthAudioProcessor  : public juce::AudioProcessor
+class BufywaveAudioProcessor  : public juce::AudioProcessor
 {
 public:
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
     //==============================================================================
-    MyDigitalSynthAudioProcessor();
-    ~MyDigitalSynthAudioProcessor() override;
+    BufywaveAudioProcessor();
+    ~BufywaveAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -72,5 +72,5 @@ private:
     juce::Synthesiser synth;
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MyDigitalSynthAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BufywaveAudioProcessor)
 };

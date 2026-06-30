@@ -3,10 +3,10 @@
 # ==============================================================================
 
 # --- Build artifacts ---
-Builds/VisualStudio2022/x64/
-Builds/VisualStudio2022/.vs/
-Builds/VisualStudio2022/*.user
-Builds/VisualStudio2022/UpgradeLog.htm
+# Projucer regenerates Builds/ from the .jucer file; CMake builds into build/.
+Builds/
+build/
+cmake-build-*/
 
 # --- Visual Studio ---
 .vs/
@@ -52,6 +52,11 @@ Builds/LinuxMakefile/build/
 
 # --- JUCE generated ---
 JuceLibraryCode/
+
+# --- Claude Code / editor local state ---
+.claude/
+.vscode/
+.idea/
 
 # --- OS files ---
 Thumbs.db
